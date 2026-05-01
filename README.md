@@ -5,6 +5,8 @@ Generate clean HTTP request payloads from Laravel Eloquent factories.
 [![Tests](https://github.com/baconfy/factory-payload/actions/workflows/tests.yml/badge.svg)](https://github.com/baconfy/factory-payload/actions/workflows/tests.yml)
 [![Latest Version](https://img.shields.io/packagist/v/baconfy/factory-payload.svg)](https://packagist.org/packages/baconfy/factory-payload)
 [![License](https://img.shields.io/packagist/l/baconfy/factory-payload.svg)](https://packagist.org/packages/baconfy/factory-payload)
+[![Total Downloads](https://img.shields.io/packagist/dt/baconfy/factory-payload.svg)](https://packagist.org/packages/baconfy/factory-payload)
+[![PHP Version](https://img.shields.io/packagist/php-v/baconfy/factory-payload.svg)](https://packagist.org/packages/baconfy/factory-payload)
 
 ## Why?
 
