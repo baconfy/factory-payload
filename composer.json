@@ -27,6 +27,9 @@
       "Baconfy\\FactoryPayload\\Tests\\": "tests/"
     }
   },
+  "scripts": {
+    "test": "./vendor/bin/pest"
+  },
   "minimum-stability": "stable",
   "prefer-stable": true,
   "config": {

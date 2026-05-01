@@ -27,6 +27,6 @@ trait HasPayloadAttributes
             array_flip($attributes)
         );
 
-        return array_merge($filtered, $overrides);
+        return [...$filtered, ...$overrides];
     }
 }
