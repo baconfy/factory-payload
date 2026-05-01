@@ -103,6 +103,9 @@ class PostFactory extends Factory
 
     protected $model = Post::class;
 
+    /**
+     * @var array<int, string>
+     */
     protected array $payloadAttributes = ['title', 'body'];
 
     public function definition(): array
