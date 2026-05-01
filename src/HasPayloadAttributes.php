@@ -17,6 +17,8 @@ trait HasPayloadAttributes
      */
     public function payload(array $overrides = [], ?Model $parent = null): array
     {
-        return PayloadBuilder::build($this, $this->payloadAttributes ?? [], $overrides, $parent);
+        $attributes = $this->payloadAttributes ?? PayloadAttributesResolver::for($this);
+
+        return PayloadBuilder::build($this, $attributes, $overrides, $parent);
     }
 }
