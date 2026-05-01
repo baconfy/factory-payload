@@ -6,7 +6,9 @@ use Baconfy\FactoryPayload\FactoryPayloadServiceProvider;
 use Baconfy\FactoryPayload\HasPayloadAttributes;
 use Baconfy\FactoryPayload\Tests\Fixtures\AttributeUserFactory;
 use Baconfy\FactoryPayload\Tests\Fixtures\User;
+use Baconfy\FactoryPayload\Tests\Fixtures\UserCreateData;
 use Baconfy\FactoryPayload\Tests\Fixtures\UserFactory;
+use Baconfy\FactoryPayload\Tests\Fixtures\UserUpdateData;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 it('returns empty array when payloadAttributes is not declared', function (): void {
@@ -86,3 +88,51 @@ it('works with state modifiers', function (): void {
 
     expect($payload['name'])->toBe('Renato');
 });
+
+it('resolves DTO shape via static keys() method through the trait', function (): void {
+    $payload = UserFactory::new()->payload(UserCreateData::class);
+
+    expect($payload)->toHaveKey('name')
+        ->and($payload)->toHaveKey('email')
+        ->and($payload)->not->toHaveKey('password')
+        ->and($payload)->not->toHaveKey('remember_token');
+});
+
+it('resolves DTO shape via static keys() method through the macro', function (): void {
+    $this->app->register(FactoryPayloadServiceProvider::class);
+
+    $payload = AttributeUserFactory::new()->payload(UserCreateData::class);
+
+    expect($payload)->toHaveKey('name')
+        ->and($payload)->toHaveKey('email')
+        ->and($payload)->not->toHaveKey('password')
+        ->and($payload)->not->toHaveKey('remember_token');
+});
+
+it('falls back to public properties via reflection through the trait', function (): void {
+    $payload = UserFactory::new()->payload(UserUpdateData::class);
+
+    expect($payload)->toHaveKey('name')
+        ->and($payload)->toHaveKey('email')
+        ->and($payload)->not->toHaveKey('password')
+        ->and($payload)->not->toHaveKey('remember_token');
+});
+
+it('falls back to public properties via reflection through the macro', function (): void {
+    $this->app->register(FactoryPayloadServiceProvider::class);
+
+    $payload = AttributeUserFactory::new()->payload(UserUpdateData::class);
+
+    expect($payload)->toHaveKey('name')
+        ->and($payload)->toHaveKey('email')
+        ->and($payload)->not->toHaveKey('password')
+        ->and($payload)->not->toHaveKey('remember_token');
+});
+
+it('throws InvalidArgumentException when DTO class does not exist', function (): void {
+    UserFactory::new()->payload('App\\Data\\NonExistentDto');
+})->throws(InvalidArgumentException::class);
+
+it('throws InvalidArgumentException when given an arbitrary non-class string', function (): void {
+    UserFactory::new()->payload('not-a-class-at-all');
+})->throws(InvalidArgumentException::class);
