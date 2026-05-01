@@ -27,6 +27,16 @@
       "Baconfy\\FactoryPayload\\Tests\\": "tests/"
     }
   },
+  "scripts": {
+    "test": "./vendor/bin/pest"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Baconfy\\FactoryPayload\\FactoryPayloadServiceProvider"
+      ]
+    }
+  },
   "minimum-stability": "stable",
   "prefer-stable": true,
   "config": {

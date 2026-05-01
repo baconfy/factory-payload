@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use Baconfy\FactoryPayload\FactoryPayloadServiceProvider;
 use Baconfy\FactoryPayload\HasPayloadAttributes;
+use Baconfy\FactoryPayload\Tests\Fixtures\AttributeUserFactory;
 use Baconfy\FactoryPayload\Tests\Fixtures\User;
 use Baconfy\FactoryPayload\Tests\Fixtures\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,6 +41,17 @@ it('returns only overrides when payloadAttributes is not declared', function ():
 
 it('filters raw attributes by whitelist', function (): void {
     $payload = UserFactory::new()->payload();
+
+    expect($payload)->toHaveKey('name')
+        ->and($payload)->toHaveKey('email')
+        ->and($payload)->not->toHaveKey('password')
+        ->and($payload)->not->toHaveKey('remember_token');
+});
+
+it('filters raw attributes by attribute whitelist', function (): void {
+    $this->app->register(FactoryPayloadServiceProvider::class);
+
+    $payload = AttributeUserFactory::new()->payload();
 
     expect($payload)->toHaveKey('name')
         ->and($payload)->toHaveKey('email')

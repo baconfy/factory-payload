@@ -10,7 +10,7 @@ Generate clean HTTP request payloads from Laravel Eloquent factories.
 
 ## Why?
 
-When testing HTTP endpoints, you need request payloads that match the shape your endpoint expects — not the shape your model stores.
+When testing HTTP endpoints, you need request payloads that match the shape your endpoint expects, not the shape your model stores.
 
 ### The simple case
 
@@ -33,7 +33,7 @@ One line. Self-documenting. Reusable across every test that hits this endpoint.
 
 ### When you need overrides
 
-Sometimes you need to control specific fields — for example, to test validation or assert against known values:
+Sometimes you need to control specific fields, for example to test validation or assert against known values:
 
 ```php
 $response = $this->postJson(
@@ -56,7 +56,39 @@ Requires PHP 8.3+ and Laravel 11, 12 or 13.
 
 ## Usage
 
-Add the `HasPayload` trait to your factory and declare which attributes belong in the HTTP payload:
+This package supports two equivalent ways to declare which attributes belong in the HTTP payload. Choose the style that best matches your project.
+
+### Using `#[PayloadAttributes]`
+
+Declare the payload attributes directly on the factory class:
+
+```php
+namespace Database\Factories;
+
+use App\Models\Post;
+use Baconfy\FactoryPayload\Attributes\PayloadAttributes;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+#[PayloadAttributes('title', 'body')]
+class PostFactory extends Factory
+{
+    protected $model = Post::class;
+
+    public function definition(): array
+    {
+        return [
+            'title' => fake()->sentence(),
+            'body' => fake()->paragraph(),
+            'user_id' => User::factory(),
+            'published_at' => now(),
+        ];
+    }
+}
+```
+
+### Using `HasPayloadAttributes`
+
+Add the `HasPayloadAttributes` trait and define `$payloadAttributes` on your factory:
 
 ```php
 namespace Database\Factories;
@@ -88,14 +120,14 @@ class PostFactory extends Factory
 }
 ```
 
-Then in your tests:
+Both examples produce the same payload in your tests:
 
 ```php
 $payload = Post::factory()->payload();
 // ['title' => 'Lorem ipsum...', 'body' => 'Dolor sit amet...']
 ```
 
-Notice how `user_id` and `published_at` — fields that belong to persistence, not to the HTTP request — are automatically excluded.
+Notice how `user_id` and `published_at` are automatically excluded because they belong to persistence, not to the HTTP request.
 
 ### With Pest datasets
 
@@ -120,8 +152,8 @@ it('rejects invalid post payloads', function (array $overrides, string $errorFie
 
 | Scenario | Result |
 |----------|--------|
-| `$payloadAttributes` not declared or empty | Returns only the overrides |
-| `$payloadAttributes` declared | Filters `raw()` by whitelist, then merges overrides |
+| No payload attributes declared | Returns only the overrides |
+| `#[PayloadAttributes]` or `$payloadAttributes` declared | Filters `raw()` by whitelist, then merges overrides |
 | Override key exists in whitelist | Override wins |
 | Override key not in whitelist | Override still passes through |
 | Factory has `count()` set | `payload()` still returns a single array |
