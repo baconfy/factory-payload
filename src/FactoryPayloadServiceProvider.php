@@ -16,8 +16,12 @@ class FactoryPayloadServiceProvider extends ServiceProvider
             return;
         }
 
-        Factory::macro('payload', function (array $overrides = [], ?Model $parent = null): array {
-            return PayloadBuilder::build($this, PayloadAttributesResolver::for($this), $overrides, $parent);
+        Factory::macro('payload', function (array|string $argument = [], ?Model $parent = null): array {
+            if (is_string($argument)) {
+                return PayloadBuilder::build($this, DtoAttributesResolver::for($argument), [], $parent);
+            }
+
+            return PayloadBuilder::build($this, PayloadAttributesResolver::for($this), $argument, $parent);
         });
     }
 }
