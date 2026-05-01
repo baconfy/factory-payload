@@ -150,6 +150,8 @@ it('rejects invalid post payloads', function (array $overrides, string $errorFie
 
 ## Behavior
 
+The behavior below applies to both `#[PayloadAttributes]` and `HasPayloadAttributes`:
+
 | Scenario | Result |
 |----------|--------|
 | No payload attributes declared | Returns only the overrides |
@@ -163,6 +165,12 @@ it('rejects invalid post payloads', function (array $overrides, string $errorFie
 ```bash
 composer test
 ```
+
+## Credits
+
+- [Renato Dehnhardt](https://github.com/rdehnhardt)
+- [Josh Donnell](https://github.com/joshdonnell) — for adding the `#[PayloadAttributes]` attribute support
+- [All contributors](https://github.com/baconfy/factory-payload/graphs/contributors)
 
 ## License
 
