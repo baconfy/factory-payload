@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Baconfy\FactoryPayload\Tests\Fixtures;
 
-use Baconfy\FactoryPayload\HasPayload;
+use Baconfy\FactoryPayload\HasPayloadAttributes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
-    use HasPayload;
+    use HasPayloadAttributes;
 
     protected $model = User::class;
 

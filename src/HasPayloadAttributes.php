@@ -6,7 +6,7 @@ namespace Baconfy\FactoryPayload;
 
 use Illuminate\Database\Eloquent\Model;
 
-trait HasPayload
+trait HasPayloadAttributes
 {
     /**
      * Get an HTTP payload array for the model.

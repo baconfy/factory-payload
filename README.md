@@ -62,12 +62,12 @@ Add the `HasPayload` trait to your factory and declare which attributes belong i
 namespace Database\Factories;
 
 use App\Models\Post;
-use Baconfy\FactoryPayload\HasPayload;
+use Baconfy\FactoryPayload\HasPayloadAttributes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PostFactory extends Factory
 {
-    use HasPayload;
+    use HasPayloadAttributes;
 
     protected $model = Post::class;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Baconfy\FactoryPayload\HasPayload;
+use Baconfy\FactoryPayload\HasPayloadAttributes;
 use Baconfy\FactoryPayload\Tests\Fixtures\User;
 use Baconfy\FactoryPayload\Tests\Fixtures\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,7 +16,7 @@ it('returns empty array when payloadAttributes is not declared', function (): vo
             return ['name' => 'Test'];
         }
 
-        use HasPayload;
+        use HasPayloadAttributes;
     };
 
     expect($factory->payload())->toBe([]);
@@ -31,7 +31,7 @@ it('returns only overrides when payloadAttributes is not declared', function ():
             return ['name' => 'Test'];
         }
 
-        use HasPayload;
+        use HasPayloadAttributes;
     };
 
     expect($factory->payload(['foo' => 'bar']))->toBe(['foo' => 'bar']);
