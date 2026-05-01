@@ -9,26 +9,23 @@ use Illuminate\Database\Eloquent\Model;
 trait HasPayload
 {
     /**
-     * The model attributes that should be included in HTTP payloads.
-     *
-     * @var array<int, string>
-     */
-    protected array $payloadAttributes = [];
-
-    /**
      * Get an HTTP payload array for the model.
      *
      * @param  array<string, mixed>  $overrides
-     * @param  \Illuminate\Database\Eloquent\Model|null  $parent
+     * @param  Model|null  $parent
      * @return array<string, mixed>
      */
     public function payload(array $overrides = [], ?Model $parent = null): array
     {
-        if (empty($this->payloadAttributes)) {
+        $attributes = $this->payloadAttributes ?? [];
+        if (empty($attributes)) {
             return $overrides;
         }
 
-        $filtered = array_intersect_key($this->count(null)->raw([], $parent), array_flip($this->payloadAttributes));
+        $filtered = array_intersect_key(
+            $this->count(null)->raw([], $parent),
+            array_flip($attributes)
+        );
 
         return array_merge($filtered, $overrides);
     }
