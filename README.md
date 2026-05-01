@@ -50,7 +50,7 @@ Overrides always pass through, even if the field isn't part of the model's store
 composer require --dev baconfy/factory-payload
 ```
 
-Requires PHP 8.2+ and Laravel 11, 12 or 13.
+Requires PHP 8.3+ and Laravel 11, 12 or 13.
 
 ## Usage
 
