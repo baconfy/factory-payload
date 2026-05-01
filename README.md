@@ -56,7 +56,7 @@ Requires PHP 8.3+ and Laravel 11, 12 or 13.
 
 ## Usage
 
-This package supports two equivalent ways to declare which attributes belong in the HTTP payload. Choose the style that best matches your project.
+This package supports three equivalent ways to declare which attributes belong in the HTTP payload. Choose the style that best matches your project.
 
 ### Using `#[PayloadAttributes]`
 
@@ -129,6 +129,47 @@ $payload = Post::factory()->payload();
 
 Notice how `user_id` and `published_at` are automatically excluded because they belong to persistence, not to the HTTP request.
 
+### Using a DTO class
+
+If your project already declares request shapes through Data Transfer Objects (DTOs), you can resolve the payload shape directly from the DTO class. Useful when you have multiple endpoints (create, update, etc.) sharing the same model.
+
+```php
+namespace App\Data;
+
+class PostCreateData
+{
+    public static function keys(): array
+    {
+        return ['title', 'body'];
+    }
+}
+```
+
+```php
+$payload = Post::factory()->payload(PostCreateData::class);
+// ['title' => 'Lorem ipsum...', 'body' => 'Dolor sit amet...']
+```
+
+The DTO resolution follows these rules:
+
+1. If the class has a static `keys(): array` method, its return value is used as the whitelist (compatible with [`spatie/laravel-data`](https://github.com/spatie/laravel-data) and similar libraries).
+2. Otherwise, falls back to the class's public properties via Reflection:
+
+```php
+class PostUpdateData
+{
+    public ?string $title = null;
+    public ?string $body = null;
+}
+
+$payload = Post::factory()->payload(PostUpdateData::class);
+// ['title' => '...', 'body' => '...']
+```
+
+If the class doesn't exist, an `InvalidArgumentException` is thrown with a clear message.
+
+> **Note:** When passing a DTO class, overrides are not supported in the same call. If you need both, use the array form: `payload(['title' => 'custom'])`.
+
 ### With Pest datasets
 
 Test multiple invalid scenarios in one go:
@@ -150,7 +191,7 @@ it('rejects invalid post payloads', function (array $overrides, string $errorFie
 
 ## Behavior
 
-The behavior below applies to both `#[PayloadAttributes]` and `HasPayloadAttributes`:
+The behavior below applies to all three ways of declaring payload attributes:
 
 | Scenario | Result |
 |----------|--------|
@@ -159,6 +200,8 @@ The behavior below applies to both `#[PayloadAttributes]` and `HasPayloadAttribu
 | Override key exists in whitelist | Override wins |
 | Override key not in whitelist | Override still passes through |
 | Factory has `count()` set | `payload()` still returns a single array |
+| DTO class passed to `payload()` | Resolves shape from `keys()` or public properties |
+| Invalid DTO class passed | Throws `InvalidArgumentException` |
 
 ## Testing
 
