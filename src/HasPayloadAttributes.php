@@ -17,16 +17,6 @@ trait HasPayloadAttributes
      */
     public function payload(array $overrides = [], ?Model $parent = null): array
     {
-        $attributes = $this->payloadAttributes ?? [];
-        if (empty($attributes)) {
-            return $overrides;
-        }
-
-        $filtered = array_intersect_key(
-            $this->count(null)->raw([], $parent),
-            array_flip($attributes)
-        );
-
-        return [...$filtered, ...$overrides];
+        return PayloadBuilder::build($this, $this->payloadAttributes ?? [], $overrides, $parent);
     }
 }
