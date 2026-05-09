@@ -1,6 +1,6 @@
-# Factory Payload
-
-Generate clean HTTP request payloads from Laravel Eloquent factories.
+<p align="center">
+    <img src="https://raw.githubusercontent.com/baconfy/factory-payload/main/docs/presentation.jpg" width="100%" alt="Prompt">
+</p>
 
 [![Tests](https://github.com/baconfy/factory-payload/actions/workflows/tests.yml/badge.svg)](https://github.com/baconfy/factory-payload/actions/workflows/tests.yml)
 [![Latest Version](https://img.shields.io/packagist/v/baconfy/factory-payload.svg)](https://packagist.org/packages/baconfy/factory-payload)
