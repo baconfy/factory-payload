@@ -2,7 +2,7 @@
   "name": "baconfy/factory-payload",
   "description": "Generate HTTP request payloads from Laravel Eloquent factories.",
   "keywords": ["laravel", "factory", "testing", "payload", "http"],
-  "license": "GPL-3.0-or-later",
+  "license": "AGPL-3.0-or-later",
   "authors": [
     {
       "name": "Baconfy",
